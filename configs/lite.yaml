@@ -1,0 +1,22 @@
+# Cheaper profile for a single free GPU (Colab/Kaggle T4) or a small API budget.
+# Keeps every axis and every analysis, with fewer levels and fewer probes.
+# Report which profile you used; results from different profiles are not pooled.
+
+subsets:
+  eval: 600
+
+axes:
+  retrieval:
+    dosages: [1, 5, 20]
+  visual:
+    gauss_sigmas: [2, 4, 8, 16]
+    motion_kernels: [10, 40]
+    crop_fracs: [0.25, 0.05]
+  grid:
+    sigmas: [16]
+    dosages: [0, 20]
+  conflict:
+    sigmas: [16]
+
+probes:
+  caption_frac: 0.1

@@ -1,0 +1,53 @@
+# GIB-200K default configuration (identical to gib/config.py::DEFAULTS).
+# Copy this file and change values to run a variant; the merged config is hashed
+# into every run's meta.json, so results always point back to their settings.
+
+seed: 0
+
+image:
+  max_side: 640          # every photo is standardised to this longer side before degradation
+  blank_size: 448        # uninformative grey image used for text-only and prior probes
+
+build:
+  per_type: {object: 66667, attribute: 66667, relation: 66666}   # 200,000 items (GIB-200K)
+  max_items_per_image: 4 # 200k items need several per image: with 3, real COCO+VG give ~186k
+  max_answer_share: {relation: 0.33}   # no answer above this share of a type: "on" is 67% of the candidates
+  min_area_frac: 0.04    # queried object covers >= 4% of the image
+  max_instances: 3
+  leftright_min_gap: 0.15
+
+subsets:
+  eval: 200000           # every model (open and closed) is evaluated on these same items: all of them
+  dev: 30
+
+axes:
+  retrieval:
+    dosages: [1, 3, 5, 10, 20]            # hard-negative documents next to the gold one
+  visual:
+    gauss_sigmas: [1, 2, 4, 8, 16]        # Gaussian blur sigma, px
+    motion_kernels: [5, 10, 20, 40]       # horizontal motion blur, px
+    crop_fracs: [0.5, 0.25, 0.10, 0.05]   # share of the object's box left visible
+    noise_stds: []                        # optional Gaussian-noise family, e.g. [10, 25, 50]
+  conflict:
+    sigmas: [4, 16]                       # conflict also asked on blurred images
+  grid:
+    sigmas: [4, 16]                       # retrieval x blur interaction grid
+    dosages: [0, 5, 20]
+
+probes:
+  mc: true               # multiple-choice probe (confidence, ECE, R, context sensitivity)
+  ab: true               # binary probe (Trust Index, cue combination, flip decomposition)
+  pope: true             # yes/no object presence on every image condition
+  caption_frac: 0.25     # share of items that also get caption probes (CHAIR)
+
+decoding:
+  qa_max_new_tokens: 10
+  caption_max_new_tokens: 48
+
+analysis:
+  bootstrap_iters: 2000
+  resolution_jump: 0.10  # change (10 points) that defines a resolution threshold
+  confident_wrong: 0.8
+  logodds_clip: 8.0
+  min_prob_coverage: 0.9 # below this share of usable token probabilities, probability-based metrics are flagged
+  min_format_mass: 0.5   # an answer's probabilities are usable only if >= this mass is on the valid answer tokens
