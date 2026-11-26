@@ -1,0 +1,16 @@
+__pycache__/
+*.pyc
+.venv/
+.pytest_cache/
+runs/
+runs_*/
+/*.log
+reports/
+demo_out/
+data/coco/
+data/vg/
+/data/gib*/
+*.sqlite
+human_study/responses/
+/dist/
+.env
