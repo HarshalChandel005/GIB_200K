@@ -1,0 +1,9 @@
+# core (CPU): build, expand, analyse, report, human study
+numpy>=2.0
+pandas>=2.1
+scipy>=1.11
+pillow>=10
+matplotlib>=3.8
+pyyaml>=6
+tqdm>=4.66
+pytest>=8
